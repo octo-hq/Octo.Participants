@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="src/Octo.Participants.Application/Octo.Participants.Application.csproj" />
+  <Project Path="src/Octo.Participants.Domain/Octo.Participants.Domain.csproj" />
+  <Project Path="src/Octo.Participants.Infrastructure/Octo.Participants.Infrastructure.csproj" Id="a980fd17-5442-4b8d-91f4-2d9f4514a100" />
+</Solution>

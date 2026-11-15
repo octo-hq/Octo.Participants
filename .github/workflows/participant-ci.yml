@@ -1,0 +1,38 @@
+name: Participant Microservice CI/CD
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+    paths:
+      - 'src/Services/Participant/**'
+      - '.github/workflows/participant-ci.yml'
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  build-and-test:
+    # Define que o job rodará no seu runner local/privado
+    runs-on: [self-hosted, linux] # Ajuste as tags conforme o seu runner (ex: [self-hosted, windows] ou apenas [self-hosted])
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.x' # Alinhado com a versão .NET 10 do nosso projeto
+
+    - name: Restore Dependencies
+      run: dotnet restore ./src/Services/Participant/Octo.Participants.sln # Ou o caminho da solution correspondente
+
+    - name: Build Solution
+      run: dotnet build ./src/Services/Participant/Octo.Participants.sln --configuration Release --no-restore
+
+    - name: Run Unit & Integration Tests
+      run: dotnet test ./src/Services/Participant/Octo.Participants.sln --no-build --configuration Release --verbosity normal
+
+    - name: Build Docker Image (Opcional)
+      run: |
+        echo "Empacotando a imagem Docker do microsserviço..."
+        docker build -t octo-participant-api:latest -f ./src/Services/Participant/Octo.Participants.Api/Dockerfile ./src/Services/Participant/
