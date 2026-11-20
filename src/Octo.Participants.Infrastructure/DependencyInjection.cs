@@ -11,9 +11,15 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        // Configuração do EF Core (Exemplo com PostgreSQL)
+
+
+        var connectionString = configuration.GetConnectionString("DefaultConnection");        
+        var schema = configuration["Database:Schema"] ?? "participant";
+
         services.AddDbContext<ParticipantDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            options.UseNpgsql(
+                connectionString,
+                npgsql => npgsql.MigrationsHistoryTable("__EFMigrationsHistory", schema)));
 
         // Registro do Repositório
         services.AddScoped<IParticipantRepository, ParticipantRepository>();

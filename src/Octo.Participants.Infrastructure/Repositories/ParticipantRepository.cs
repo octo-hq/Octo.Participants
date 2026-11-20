@@ -19,9 +19,34 @@ public class ParticipantRepository : IParticipantRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<Participant?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<Participant?> GetByIdAsync(
+        Guid id,
+        QueryIncludeOptions? includeOptions = null,
+        CancellationToken cancellationToken = default)
     {
-        return await _context.Participants
-            .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+        IQueryable<Participant> query = _context.Participants.AsNoTracking();
+
+        query = ApplyIncludes(query, includeOptions);
+
+        return await query.FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+    }
+
+    private static IQueryable<TEntity> ApplyIncludes<TEntity>(
+        IQueryable<TEntity> query,
+        QueryIncludeOptions? includeOptions)
+        where TEntity : class
+    {
+        if (includeOptions?.Includes is null || includeOptions.Includes.Count == 0)
+            return query;
+
+        foreach (var includePath in includeOptions.Includes)
+        {
+            if (!string.IsNullOrWhiteSpace(includePath))
+            {
+                query = query.Include(includePath.Trim());
+            }
+        }
+
+        return query;
     }
 }

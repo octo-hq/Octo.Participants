@@ -7,8 +7,9 @@ namespace Octo.Participants.Domain.Aggregates.ParticipantAggregate;
 
 public class TaxDomicile : ValueObject
 {
-    public string CountryCode { get; private set; }
+    public string CountryCode { get; private set; } = string.Empty;
 
+    private TaxDomicile() { }
     private TaxDomicile(string countryCode)
     {
         CountryCode = countryCode.ToUpper();

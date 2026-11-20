@@ -3,7 +3,4 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Octo.Participants.Application.Participants.Commands.RegisterParticipant;
-
-internal class RegisterParticipantResponse
-{
-}
+public sealed record RegisterParticipantResponse(Guid Id);

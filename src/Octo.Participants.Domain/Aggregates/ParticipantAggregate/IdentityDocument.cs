@@ -10,6 +10,7 @@ public class IdentityDocument : ValueObject
     public DocumentType Type { get; private set; }
     public TaxDomicile Domicile { get; private set; }
 
+    private IdentityDocument() { }
     private IdentityDocument(string number, DocumentType type, TaxDomicile domicile)
     {
         Number = number;

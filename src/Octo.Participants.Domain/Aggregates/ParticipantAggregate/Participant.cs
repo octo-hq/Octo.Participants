@@ -10,6 +10,7 @@ public class Participant : AggregateRoot<Guid>
     public IdentityDocument PrimaryDocument { get; private set; }
     public string PrimaryEmail { get; private set; }
 
+    private Participant() { }
     private Participant(string name, IdentityDocument primaryDocument, string primaryEmail)
         : base(Guid.NewGuid())
     {

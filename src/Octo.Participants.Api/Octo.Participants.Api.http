@@ -1,0 +1,6 @@
+@Octo.Participants.Api_HostAddress = http://localhost:5044
+
+GET {{Octo.Participants.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

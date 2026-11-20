@@ -12,6 +12,8 @@ public class ParticipantConfiguration : IEntityTypeConfiguration<Participant>
 
         builder.HasKey(p => p.Id);
 
+        builder.Ignore(p => p.Notifications);
+
         builder.Property(p => p.Name)
             .IsRequired()
             .HasMaxLength(150);
@@ -23,6 +25,8 @@ public class ParticipantConfiguration : IEntityTypeConfiguration<Participant>
         // Mapeia o PrimaryDocument (IdentityDocument) que pertence ao Participant
         builder.OwnsOne(p => p.PrimaryDocument, doc =>
         {
+            doc.WithOwner(); // Força explicitamente a relação de propriedade
+
             doc.Property(d => d.Number)
                 .HasColumnName("DocumentNumber")
                 .IsRequired()
@@ -35,6 +39,8 @@ public class ParticipantConfiguration : IEntityTypeConfiguration<Participant>
             // Mapeia o TaxDomicile que está dentro do IdentityDocument
             doc.OwnsOne(d => d.Domicile, tax =>
             {
+                tax.WithOwner(); // Força explicitamente a propriedade aninhada
+
                 tax.Property(t => t.CountryCode)
                     .HasColumnName("DocumentTaxCountryCode")
                     .IsRequired()

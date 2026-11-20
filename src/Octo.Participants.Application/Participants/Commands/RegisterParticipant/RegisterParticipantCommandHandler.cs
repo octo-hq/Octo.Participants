@@ -15,7 +15,7 @@ public class RegisterParticipantCommandHandler
         _participantRepository = participantRepository;
     }
 
-    public async Task<Result> HandleAsync(RegisterParticipantCommand command, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> HandleAsync(RegisterParticipantCommand command, CancellationToken cancellationToken)
     {                
         // O domínio faz todo o trabalho pesado de validação e composição em um único lugar
         var participantResult = Participant.Create(
